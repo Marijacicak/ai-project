@@ -1,5 +1,3 @@
-name: CI
-
 on:
   push:
     branches:
@@ -85,7 +83,7 @@ jobs:
       - name: Build Docker containers
         run: docker compose build
 
-    deploy:
+  deploy:
     name: Deploy Application
     runs-on: ubuntu-latest
 
