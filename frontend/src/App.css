@@ -1,0 +1,328 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+}
+
+/* Form Styles */
+.register-container,
+.login-container {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.register-container form,
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.register-container div,
+.login-container div {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.register-container label,
+.login-container label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.register-container input,
+.login-container input {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+}
+
+.register-container button,
+.login-container button {
+  padding: 0.75rem 1.5rem;
+  background: #61dafb;
+  color: #282c34;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.register-container button:hover,
+.login-container button:hover {
+  background: #21c7ff;
+}
+
+.register-container button:disabled,
+.login-container button:disabled {
+  background: #666;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ff6b6b;
+}
+
+/* Dashboard Styles */
+.dashboard {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.dashboard h2 {
+  color: #61dafb;
+  margin-bottom: 1rem;
+}
+
+.dashboard p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.dashboard button {
+  padding: 0.75rem 1.5rem;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 1rem;
+}
+
+.dashboard button:hover {
+  background: #ff5252;
+}
+
+/* Admin Section Styles */
+.admin-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(97, 218, 251, 0.1);
+  border-radius: 8px;
+  border: 1px solid #61dafb;
+}
+
+.admin-section h3 {
+  color: #61dafb;
+  margin-bottom: 1rem;
+}
+
+.admin-section h4 {
+  color: #61dafb;
+  margin: 1.5rem 0 1rem 0;
+}
+
+.admin-section button {
+  background: #61dafb;
+  color: #282c34;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+}
+
+.admin-section button:hover {
+  background: #21c7ff;
+  color: #282c34;
+}
+
+/* Users Table Styles */
+.users-table {
+  margin-top: 1.5rem;
+  overflow-x: auto;
+}
+
+.users-table table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.users-table th,
+.users-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  vertical-align: top;
+}
+
+.users-table th {
+  background: rgba(97, 218, 251, 0.2);
+  color: #61dafb;
+  font-weight: bold;
+  min-width: 80px;
+}
+
+.users-table th:nth-child(1) {
+  /* ID */
+  min-width: 50px;
+  width: 50px;
+}
+
+.users-table th:nth-child(2) {
+  /* Username */
+  min-width: 120px;
+  width: 120px;
+}
+
+.users-table th:nth-child(3) {
+  /* Email */
+  min-width: 200px;
+  width: 200px;
+  max-width: 250px;
+  word-wrap: break-word;
+}
+
+.users-table th:nth-child(4) {
+  /* Roles */
+  min-width: 100px;
+  width: 100px;
+}
+
+.users-table th:nth-child(5) {
+  /* Active */
+  min-width: 80px;
+  width: 80px;
+}
+
+.users-table th:nth-child(6) {
+  /* Created */
+  min-width: 100px;
+  width: 100px;
+}
+
+.users-table th:nth-child(7) {
+  /* Actions */
+  min-width: 80px;
+  width: 80px;
+}
+
+.users-table td:nth-child(3) {
+  /* Email column */
+  word-wrap: break-word;
+  word-break: break-all;
+  max-width: 250px;
+}
+
+.users-table tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.users-table td {
+  color: #282c34;
+}
+
+/* User Section Styles */
+.user-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 8px;
+  border: 1px solid #ff6b6b;
+}
+
+.user-section h3 {
+  color: #ff6b6b;
+  margin-bottom: 1rem;
+}
+
+.user-section button {
+  background: #ff6b6b;
+  color: white;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+}
+
+.user-section button:hover {
+  background: #ff5252;
+  color: white;
+}
+
+.error-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(255, 107, 107, 0.2);
+  border: 1px solid #ff6b6b;
+  border-radius: 5px;
+  color: #ff6b6b;
+}
+
+.error-message p {
+  margin: 0;
+  font-weight: bold;
+}
+
+/* Actions Column Styles */
+.actions-placeholder {
+  color: #888;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.delete-text {
+  color: #ff6b6b;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.delete-text:hover {
+  color: #ff5252;
+}
+
+/* Toggle buttons */
+.App-header p button {
+  background: transparent;
+  color: #61dafb;
+  border: 1px solid #61dafb;
+  padding: 0.25rem 0.75rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.App-header p button:hover {
+  background: #61dafb;
+  color: #282c34;
+}

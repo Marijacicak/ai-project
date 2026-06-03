@@ -1,0 +1,90 @@
+trigger:
+  - main
+  - develop
+
+pr:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  # =========================
+  # FRONTEND
+  # =========================
+  - stage: Frontend
+    jobs:
+      - job: FrontendChecks
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: "20.x"
+
+          - script: |
+              cd frontend
+              npm ci
+            displayName: Install frontend dependencies
+
+          - script: |
+              cd frontend
+              npm run lint
+            displayName: Frontend lint
+
+          - script: |
+              cd frontend
+              npm run build
+            displayName: Frontend build
+
+  # =========================
+  # BACKEND
+  # =========================
+  - stage: Backend
+    jobs:
+      - job: BackendChecks
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: "3.11"
+
+          - script: |
+              cd backend
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt
+            displayName: Install backend dependencies
+
+          - script: |
+              cd backend
+              black --check .
+            displayName: Black check
+
+          - script: |
+              cd backend
+              flake8 .
+            displayName: Flake8 lint
+
+  # =========================
+  # DOCKER
+  # =========================
+  - stage: Docker
+    displayName: Docker Validation
+
+    dependsOn:
+      - Frontend
+      - Backend
+
+    jobs:
+      - job: DockerBuild
+        displayName: Validate Docker Build
+
+        steps:
+          - checkout: self
+
+          # Verify docker compose syntax
+          - script: |
+              docker compose config
+            displayName: Validate docker-compose
+
+          # Build containers
+          - script: |
+              docker compose build
+            displayName: Build Docker containers
