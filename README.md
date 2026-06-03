@@ -33,6 +33,7 @@ docker-compose up --build
 ```
 
 This will:
+
 - Start PostgreSQL database
 - Build and start the FastAPI backend
 - Build and start the Vite frontend
@@ -49,6 +50,7 @@ This will:
 ### Frontend Development
 
 The frontend is a Vite + React application with:
+
 - Hot reload enabled
 - Proxy configuration to backend API
 - Axios for API calls
@@ -56,6 +58,7 @@ The frontend is a Vite + React application with:
 ### Backend Development
 
 The backend is a FastAPI application with:
+
 - SQLAlchemy for database ORM
 - PostgreSQL connection
 - CORS middleware
@@ -70,13 +73,14 @@ The backend is a FastAPI application with:
 
 ## API Endpoints
 
-- `GET /` - Root endpoint
+- `GET /` - Root endpoints
 - `GET /hello` - Hello world endpoint
 - `GET /docs` - Interactive API documentation
 
 ## Environment Variables
 
 Backend environment variables:
+
 - `DATABASE_URL` - PostgreSQL connection string
 
 Copy `.env.example` to `.env` in the backend directory if needed.
@@ -88,6 +92,7 @@ docker-compose down
 ```
 
 To remove the database volume (all data will be lost):
+
 ```bash
 docker-compose down -v
 ```
