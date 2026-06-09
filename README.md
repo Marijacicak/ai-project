@@ -92,7 +92,6 @@ docker-compose down
 ```
 
 To remove the database volume (all data will be lost):
-TEst
 
 ```bash
 docker-compose down -v
