@@ -2,7 +2,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_API_URL: string;
-  // Add more environment variables here as needed
+  readonly VITE_ENABLE_MOCKS?: string;
 }
 
 interface ImportMeta {
