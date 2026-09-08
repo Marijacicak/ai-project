@@ -1,3 +1,12 @@
+# Description
+
+This project is a small authentication and user-management app. Main flow: register → log in → view dashboard → manage users.
+
+- **Accounts**: Register with username, email, and password. First account becomes admin; later accounts get the user role.
+- **Login**: Backend checks hashed passwords and issues a JWT valid for 30 minutes. Browser stores login data locally.
+- **Dashboard**: Shows your profile, roles, a backend greeting, and a user table.
+- **Admin actions**: Admins can delete other accounts. Regular users get a button to test that deletion is blocked.
+
 # Full-Stack Project with Vite, FastAPI, and PostgreSQL
 
 This project contains a complete full-stack application with:
