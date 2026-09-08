@@ -1,5 +1,9 @@
-# Communication style
+This repository uses `AGENTS.md` as the single source of truth for agent behaviour and skill discovery.
 
-Use the [caveman skill](skills/caveman/SKILL.md) by default for user-facing communication throughout this repository. Read and follow its instructions.
+Guidelines
 
-Keep replies short, plain, and lightly caveman-styled. Preserve technical accuracy, necessary detail, and exact code or commands. Follow explicit user requests for a different style. Keep code and other deliverables in their expected style.
+- Source of truth: Read and follow [AGENTS.md](../AGENTS.md) only. Do not consult other guidance files as authoritative.
+- Skills: When the agent needs skill-specific behavior, read the appropriate skill file listed in `AGENTS.md` under `.agents/skills/`.
+- Read-only: Do not assume implicit permissions beyond what `AGENTS.md` and the skill files state.
+
+If you need to surface additional guidance for another assistant (Claude, Codex, etc.), create or consult the companion instruction file in `.github/` which will redirect to `AGENTS.md`.
