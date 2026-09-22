@@ -94,57 +94,6 @@ Backend environment variables:
 
 Copy `.env.example` to `.env` in the backend directory if needed.
 
-## Profile chatbot
-
-The bottom-right assistant is available after signing in. It answers questions
-about **your own** username, email, roles, active status, creation date, user ID,
-and the `GET /auth/me` endpoint. Other users and write operations are outside its
-scope, including for administrators.
-
-### Configuration
-
-1. Copy the repository-root `.env.example` to `.env` and set `OPENAI_API_KEY`.
-   Use an OpenAI API key, not your ChatGPT login. Never put the key in a `VITE_`
-   variable or commit it. `CHAT_MODEL` defaults to `openai:gpt-4.1-mini`.
-2. Install frontend dependencies from `frontend` with `npm install`. This also
-   updates the lockfile if MUI was previously installed only in a container.
-3. Rebuild with `docker compose up -d --build --force-recreate backend frontend`.
-4. The frontend uses an anonymous `/app/node_modules` volume. If it still contains
-   old dependencies, run `docker compose exec frontend npm install` and then
-   `docker compose restart frontend`.
-5. Sign out and sign back in using a real backend account. Compose disables MSW
-   mock authentication because its fake tokens cannot authenticate MCP requests.
-
-For a backend started outside Docker, install `backend/requirements.txt`, configure
-`backend/.env`, and run it on port 8000. The private MCP tool calls the backend on
-`127.0.0.1:8000` from inside the same container/process environment.
-
-### How it works
-
-`POST /chat` authenticates the existing JWT. PydanticAI asks the model to select
-only supported profile fields; it cannot produce free-form answer text. The
-backend then starts a private stdio MCP server with that request's token and calls
-its single `get_my_profile` tool. That tool calls `GET /auth/me`, validates its
-response, and returns only the public profile schema. Backend templates render
-the requested values and source attribution. This enforces the answer's data
-scope independently of model instructions.
-
-The token is never a model argument, tool argument, or command-line argument.
-There is no public MCP HTTP port and no access to `/auth/users`, arbitrary URLs,
-SQL, passwords, or write tools. Model input consists of the current question and
-up to six earlier questions; profile values are added locally after model output.
-Questions themselves may contain personal information if the user includes it.
-
-Replies arrive as complete, validated messages, with loading, retry, and cancel
-controls. History is held in browser memory and clears on refresh or logout;
-database conversation storage and token-by-token streaming are not included in
-this deliberately restricted profile assistant. Stop cancels the browser request;
-an already-started backend/model request may run until its 45-second timeout.
-
-Try “Show my profile”, “What are my roles?”, and “What is my profile endpoint?”.
-Missing API credentials produce a setup message; provider/MCP failures return a
-generic error without exposing credentials or profile data in exception logs.
-
 ## Stopping the Application
 
 ```bash

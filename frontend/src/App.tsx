@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Register from './components/Register';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
-import { ChatWidget } from './components/chat/ChatWidget';
 import { isAuthenticated, getCurrentUser, authAPI } from './services/auth';
 import { User } from './types/auth';
 import './App.css';
@@ -43,12 +42,7 @@ function App() {
   }
 
   if (currentUser) {
-    return (
-      <>
-        <Dashboard user={currentUser} onLogout={handleLogout} />
-        <ChatWidget key={currentUser.id} />
-      </>
-    );
+    return <Dashboard user={currentUser} onLogout={handleLogout} />;
   }
 
   return (

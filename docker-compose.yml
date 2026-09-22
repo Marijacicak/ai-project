@@ -23,8 +23,6 @@ services:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql://postgres:password@db:5432/mydatabase
-      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
-      CHAT_MODEL: ${CHAT_MODEL:-openai:gpt-4.1-mini}
     depends_on:
       db:
         condition: service_healthy
@@ -34,8 +32,6 @@ services:
 
   frontend:
     build: ./frontend
-    environment:
-      VITE_ENABLE_MOCKS: 'false'
     ports:
       - "3000:3000"
     depends_on:
