@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
-from routers import hello, auth
+from routers import hello, auth, chat
 from seed_roles import seed_roles
 
 app = FastAPI(title="FastAPI Backend")
@@ -24,6 +24,7 @@ seed_roles()
 # Include routers
 app.include_router(auth.router)
 app.include_router(hello.router)
+app.include_router(chat.router)
 
 
 @app.get("/")
