@@ -1,10 +1,16 @@
 import { useState, useEffect } from 'react';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Paper,
+  Typography,
+} from '@mui/material';
 import Register from './components/Register';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import { isAuthenticated, getCurrentUser, authAPI } from './services/auth';
 import { User } from './types/auth';
-import './App.css';
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -38,7 +44,11 @@ function App() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Box sx={{ minHeight: '100vh', display: 'grid', placeItems: 'center' }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (currentUser) {
@@ -46,29 +56,43 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Authentication App</h1>
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 3,
+        p: 2,
+        bgcolor: 'background.default',
+      }}
+    >
+      <Typography variant="h4" component="h1" color="text.primary">
+        Authentication App
+      </Typography>
 
+      <Paper sx={{ width: '100%', maxWidth: 400, p: 4 }}>
         {showLogin ? (
-          <div>
-            <Login onLoginSuccess={handleLoginSuccess} />
-            <p>
-              No account?{' '}
-              <button onClick={() => setShowLogin(false)}>Register</button>
-            </p>
-          </div>
+          <Login onLoginSuccess={handleLoginSuccess} />
         ) : (
-          <div>
-            <Register onRegisterSuccess={handleRegisterSuccess} />
-            <p>
-              Already have an account?{' '}
-              <button onClick={() => setShowLogin(true)}>Login</button>
-            </p>
-          </div>
+          <Register onRegisterSuccess={handleRegisterSuccess} />
         )}
-      </header>
-    </div>
+
+        <Box sx={{ mt: 2, textAlign: 'center' }}>
+          <Typography variant="body2" color="text.secondary" component="span">
+            {showLogin ? 'No account?' : 'Already have an account?'}{' '}
+          </Typography>
+          <Button
+            variant="text"
+            size="small"
+            onClick={() => setShowLogin(!showLogin)}
+          >
+            {showLogin ? 'Register' : 'Login'}
+          </Button>
+        </Box>
+      </Paper>
+    </Box>
   );
 }
 

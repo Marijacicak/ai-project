@@ -1,5 +1,24 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import {
+  Alert,
+  AppBar,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Paper,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Toolbar,
+  Typography,
+} from '@mui/material';
+import { LogOut } from 'lucide-react';
 import { User } from '../types/auth';
 import { canAccessAdminFeatures, isAdmin } from '../utils/roleUtils';
 
@@ -79,79 +98,133 @@ const Dashboard = ({ user, onLogout }: DashboardProps) => {
   }, [user, fetchAllUsers]);
 
   return (
-    <div className="dashboard">
-      <h2>Welcome, {user.username}!</h2>
-      <p>Email: {user.email}</p>
-      <p>Roles: {...user.roles}</p>
-      <p>Backend says: {message}</p>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+      <AppBar
+        position="static"
+        color="inherit"
+        elevation={0}
+        sx={{ borderBottom: 1, borderColor: 'divider' }}
+      >
+        <Toolbar>
+          <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
+            Authentication App
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mr: 2 }}>
+            {user.username}
+          </Typography>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={handleLogout}
+            startIcon={<LogOut size={16} />}
+          >
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
 
-      {!canAccessAdminFeatures(user) && user.roles.includes('user') && (
-        <div className="user-section">
-          <h3>User Features</h3>
-          <p>Test admin endpoint access (should fail):</p>
-          <button onClick={() => deleteUser(users[0].id ?? 0)}>
-            Test DELETE 1st from the list
-          </button>
-          {userTestError && (
-            <div className="error-message">
-              <p>
-                <strong>Error:</strong> {userTestError}
-              </p>
-            </div>
+      <Container maxWidth="md" sx={{ py: 4 }}>
+        <Stack spacing={3}>
+          <Paper sx={{ p: 3 }}>
+            <Typography variant="h5" component="h2" gutterBottom>
+              Welcome, {user.username}!
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Email: {user.email}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Roles: {user.roles.join(', ')}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Backend says: {message}
+            </Typography>
+          </Paper>
+
+          {!canAccessAdminFeatures(user) && user.roles.includes('user') && (
+            <Paper variant="outlined" sx={{ p: 3 }}>
+              <Typography variant="h6" component="h3" gutterBottom>
+                User Features
+              </Typography>
+              <Typography variant="body2" color="text.secondary" gutterBottom>
+                Test admin endpoint access (should fail):
+              </Typography>
+              <Button
+                variant="outlined"
+                color="warning"
+                onClick={() => deleteUser(users[0].id ?? 0)}
+              >
+                Test DELETE 1st from the list
+              </Button>
+              {userTestError && (
+                <Alert severity="error" sx={{ mt: 2 }}>
+                  <strong>Error:</strong> {userTestError}
+                </Alert>
+              )}
+            </Paper>
           )}
-        </div>
-      )}
 
-      <div className="admin-section">
-        <h3>USERS</h3>
-
-        <div className="users-table">
-          <h4>All Users</h4>
-          {loading ? (
-            <p>Loading users...</p>
-          ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Roles</th>
-                  <th>Active</th>
-                  <th>Created</th>
-                  {isAdmin(user) && <th>Actions</th>}
-                </tr>
-              </thead>
-              <tbody>
-                {users.map(userItem => (
-                  <tr key={userItem.id}>
-                    <td>{userItem.id}</td>
-                    <td>{userItem.username}</td>
-                    <td>{userItem.email}</td>
-                    <td>{userItem.roles.join(', ')}</td>
-                    <td>{userItem.is_active ? 'Yes' : 'No'}</td>
-                    <td>
-                      {new Date(userItem.created_at).toLocaleDateString()}
-                    </td>
-                    {isAdmin(user) && (
-                      <td>
-                        {!userItem.roles.includes('admin') && (
-                          <button onClick={() => deleteUser(userItem.id)}>
-                            DELETE
-                          </button>
+          <Paper sx={{ p: 3 }}>
+            <Typography variant="overline" color="text.secondary">
+              USERS
+            </Typography>
+            <Typography variant="h6" component="h3" gutterBottom>
+              All Users
+            </Typography>
+            {loading ? (
+              <Box sx={{ display: 'grid', placeItems: 'center', py: 4 }}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              <TableContainer>
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>ID</TableCell>
+                      <TableCell>Username</TableCell>
+                      <TableCell>Email</TableCell>
+                      <TableCell>Roles</TableCell>
+                      <TableCell>Active</TableCell>
+                      <TableCell>Created</TableCell>
+                      {isAdmin(user) && <TableCell>Actions</TableCell>}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {users.map(userItem => (
+                      <TableRow key={userItem.id}>
+                        <TableCell>{userItem.id}</TableCell>
+                        <TableCell>{userItem.username}</TableCell>
+                        <TableCell>{userItem.email}</TableCell>
+                        <TableCell>{userItem.roles.join(', ')}</TableCell>
+                        <TableCell>
+                          {userItem.is_active ? 'Yes' : 'No'}
+                        </TableCell>
+                        <TableCell>
+                          {new Date(userItem.created_at).toLocaleDateString()}
+                        </TableCell>
+                        {isAdmin(user) && (
+                          <TableCell>
+                            {!userItem.roles.includes('admin') && (
+                              <Button
+                                size="small"
+                                color="error"
+                                variant="outlined"
+                                onClick={() => deleteUser(userItem.id)}
+                              >
+                                DELETE
+                              </Button>
+                            )}
+                          </TableCell>
                         )}
-                      </td>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-      </div>
-
-      <button onClick={handleLogout}>Logout</button>
-    </div>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )}
+          </Paper>
+        </Stack>
+      </Container>
+    </Box>
   );
 };
 

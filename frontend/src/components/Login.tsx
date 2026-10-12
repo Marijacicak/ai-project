@@ -1,4 +1,13 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { authAPI } from '../services/auth';
 import { UserLogin, User } from '../types/auth';
 
@@ -47,35 +56,43 @@ const Login = ({ onLoginSuccess }: LoginProps) => {
   };
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        {error && <div className="error">{error}</div>}
-        <button type="submit" disabled={loading}>
+    <Box component="form" onSubmit={handleSubmit}>
+      <Typography variant="h5" component="h2" gutterBottom>
+        Login
+      </Typography>
+      <Stack spacing={2}>
+        <TextField
+          label="Email:"
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+        <TextField
+          label="Password:"
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+        {error && <Alert severity="error">{error}</Alert>}
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          disabled={loading}
+          startIcon={
+            loading ? <CircularProgress size={16} color="inherit" /> : undefined
+          }
+        >
           {loading ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
-    </div>
+        </Button>
+      </Stack>
+    </Box>
   );
 };
 
