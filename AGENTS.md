@@ -13,6 +13,7 @@ Known skills
 - Caveman — ultra-compressed communication mode: `.agents/skills/caveman/SKILL.md`
 - MUI Frontend — React + MUI UI conventions: `.agents/skills/mui-frontend/SKILL.md`
 - PR Review — local PR review guidance: `.agents/skills/pr-review/SKILL.md`
+- Grill Me — relentless one-question-at-a-time interview to reach shared understanding of a plan: `.agents/skills/grill-me/SKILL.md`
 
 How agents should use this file
 
