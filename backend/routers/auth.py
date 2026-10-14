@@ -13,7 +13,8 @@ from auth import (
     get_current_user,
     ACCESS_TOKEN_EXPIRE_MINUTES,
 )
-from dependencies import is_admin
+from dependencies import require_permission
+from permissions import resolve_permissions
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
 
@@ -62,6 +63,7 @@ async def register(user: UserCreate, db: Session = Depends(get_db)):
         is_active=db_user.is_active,
         created_at=db_user.created_at,
         roles=[role.name for role in db_user.roles],
+        permissions=resolve_permissions(role.name for role in db_user.roles),
     )
 
 
@@ -90,6 +92,7 @@ async def get_current_user_info(current_user: User = Depends(get_current_user)):
         is_active=current_user.is_active,
         created_at=current_user.created_at,
         roles=[role.name for role in current_user.roles],
+        permissions=resolve_permissions(role.name for role in current_user.roles),
     )
 
 
@@ -104,6 +107,7 @@ async def get_all_users(db: Session = Depends(get_db)):
             is_active=user.is_active,
             created_at=user.created_at,
             roles=[role.name for role in user.roles],
+            permissions=resolve_permissions(role.name for role in user.roles),
         )
         for user in users
     ]
@@ -111,7 +115,9 @@ async def get_all_users(db: Session = Depends(get_db)):
 
 @router.delete("/users/{user_id}")
 async def delete_user(
-    user_id: int, db: Session = Depends(get_db), current_user: User = Depends(is_admin)
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_permission("delete_users")),
 ):
     user = db.query(User).filter(User.id == user_id).first()
     if not user:

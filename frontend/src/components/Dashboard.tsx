@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { LogOut } from 'lucide-react';
 import { User } from '../types/auth';
-import { canAccessAdminFeatures, isAdmin } from '../utils/roleUtils';
+import { hasPermission, isAdmin } from '../utils/roleUtils';
 
 interface DashboardProps {
   user: User;
@@ -140,7 +140,7 @@ const Dashboard = ({ user, onLogout }: DashboardProps) => {
             </Typography>
           </Paper>
 
-          {!canAccessAdminFeatures(user) && user.roles.includes('user') && (
+          {!isAdmin(user) && user.roles.includes('user') && (
             <Paper variant="outlined" sx={{ p: 3 }}>
               <Typography variant="h6" component="h3" gutterBottom>
                 User Features
@@ -185,7 +185,9 @@ const Dashboard = ({ user, onLogout }: DashboardProps) => {
                       <TableCell>Roles</TableCell>
                       <TableCell>Active</TableCell>
                       <TableCell>Created</TableCell>
-                      {isAdmin(user) && <TableCell>Actions</TableCell>}
+                      {hasPermission(user, 'delete_users') && (
+                        <TableCell>Actions</TableCell>
+                      )}
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -201,7 +203,7 @@ const Dashboard = ({ user, onLogout }: DashboardProps) => {
                         <TableCell>
                           {new Date(userItem.created_at).toLocaleDateString()}
                         </TableCell>
-                        {isAdmin(user) && (
+                        {hasPermission(user, 'delete_users') && (
                           <TableCell>
                             {!userItem.roles.includes('admin') && (
                               <Button

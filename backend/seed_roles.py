@@ -1,7 +1,6 @@
 from database import SessionLocal, engine, Base
 from models.role import Role
 from models.user import User
-import json
 
 
 def seed_roles():
@@ -19,21 +18,11 @@ def seed_roles():
         # Create default roles
         user_role = Role(
             name="user",
-            permissions=json.dumps(["read_own_profile", "update_own_profile"]),
             description="Standard user with basic permissions",
         )
 
         admin_role = Role(
             name="admin",
-            permissions=json.dumps(
-                [
-                    "read_own_profile",
-                    "update_own_profile",
-                    "read_all_users",
-                    "delete_users",
-                    "manage_roles",
-                ]
-            ),
             description="Administrator with full system access",
         )
 

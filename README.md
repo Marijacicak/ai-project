@@ -80,6 +80,23 @@ The backend is a FastAPI application with:
 - User: `postgres`
 - Password: `password`
 
+Roles are seeded only into an empty database. Permissions are defined in
+`backend/permissions.py`, not in the database. If your volume was created before
+this change, the `roles.permissions` column still has `NOT NULL`. Relax it once
+so new roles can be inserted:
+
+```bash
+docker-compose exec db psql -U postgres -d mydatabase -c "ALTER TABLE roles ALTER COLUMN permissions DROP NOT NULL;"
+```
+
+### Backend Tests
+
+```bash
+cd backend
+pip install -r requirements-dev.txt
+pytest
+```
+
 ## API Endpoints
 
 - `GET /` - Root endpoints

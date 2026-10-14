@@ -17,6 +17,7 @@ class UserResponse(UserBase):
     is_active: bool
     created_at: datetime
     roles: List[str] = []
+    permissions: List[str] = []
 
     class Config:
         from_attributes = True

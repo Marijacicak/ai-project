@@ -17,7 +17,7 @@ class Role(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True, nullable=False)
-    permissions = Column(String, nullable=False)  # JSON string of permissions
+    permissions = Column(String, nullable=True)  # Unused; see permissions.py
     description = Column(String)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
