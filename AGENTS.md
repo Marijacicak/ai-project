@@ -15,6 +15,7 @@ Known skills
 - PR Review — local PR review guidance: `.agents/skills/pr-review/SKILL.md`
 - Grill Me — relentless one-question-at-a-time interview to reach shared understanding of a plan: `.agents/skills/grill-me/SKILL.md`
 - Improve Codebase Architecture — scans for shallow modules and deepening opportunities, writes an HTML report, then grills the chosen candidate: `.agents/skills/improve-codebase-architecture/SKILL.md`
+- Write a PRD — interview-driven PRD creation with grilling on vision, metrics, features, and timelines: `.agents/skills/write-a-prd/SKILL.md`
 
 How agents should use this file
 
