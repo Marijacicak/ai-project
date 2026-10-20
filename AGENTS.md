@@ -13,6 +13,7 @@ Skills
 
 - `caveman`: Ultra-compressed replies (lite, full, ultra modes) when the user asks for brevity.
 - `grill-me`: One-question-at-a-time interview that stress-tests a plan until shared understanding.
+- `improve-codebase-architecture`: Finds shallow modules, reports them as HTML, then grills through the one the user picks. Manual only.
 - `mui-frontend`: React UI work using the repo's MUI theme, `sx` styling, and component conventions.
 - `write-a-prd`: Interviews the user, then drafts a Product Requirements Document.
 
