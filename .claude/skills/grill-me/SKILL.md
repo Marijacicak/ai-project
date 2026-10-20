@@ -10,4 +10,4 @@ This is a thin wrapper. The canonical skill lives at
 
 Before starting, read `.agents/skills/grill-me/SKILL.md` in full and follow its
 rules exactly. If that file cannot be read, stop and tell the user rather than
-improvising the session from memory.
+improvising from memory.

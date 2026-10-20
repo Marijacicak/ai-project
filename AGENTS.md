@@ -7,20 +7,25 @@ Rules
 - Single source: `AGENTS.md` is authoritative. Do not prefer other repo-level instruction files over this file.
 - Skills: Read all skill definitions under `.agents/skills/`. Skill files are the canonical place for focused behavior (modes, review rules, UI conventions, etc.).
 - Updates: When adding or changing a skill, update the corresponding `SKILL.md` under `.agents/skills/` and add a short line in this file describing the skill.
+- Claude wrappers: Each skill has a thin entry point at `.claude/skills/<name>/SKILL.md` that copies the frontmatter and points to the canonical file. When adding, renaming, or removing a skill, or changing its description, update its wrapper too.
 
-Known skills
+Skills
 
-- Caveman — ultra-compressed communication mode: `.agents/skills/caveman/SKILL.md`
-- MUI Frontend — React + MUI UI conventions: `.agents/skills/mui-frontend/SKILL.md`
-- PR Review — local PR review guidance: `.agents/skills/pr-review/SKILL.md`
-- Grill Me — relentless one-question-at-a-time interview to reach shared understanding of a plan: `.agents/skills/grill-me/SKILL.md`
-- Improve Codebase Architecture — scans for shallow modules and deepening opportunities, writes an HTML report, then grills the chosen candidate: `.agents/skills/improve-codebase-architecture/SKILL.md`
-- Write a PRD — interview-driven PRD creation with grilling on vision, metrics, features, and timelines: `.agents/skills/write-a-prd/SKILL.md`
+- `caveman`: Ultra-compressed replies (lite, full, ultra modes) when the user asks for brevity.
+- `grill-me`: One-question-at-a-time interview that stress-tests a plan until shared understanding.
+- `mui-frontend`: React UI work using the repo's MUI theme, `sx` styling, and component conventions.
+- `write-a-prd`: Interviews the user, then drafts a Product Requirements Document.
 
-How agents should use this file
+# Project instructions
 
-1. Read `AGENTS.md` fully.
-2. Read every `SKILL.md` referenced under `.agents/skills/` and follow their rules when that skill applies.
-3. When responding, prefer instructions here over other documentation unless the user explicitly asks to consult another file.
+Stack: React, TypeScript, FastAPI, Python.
 
-If you are an assistant runtime that supports skill invocation, treat each `SKILL.md` as a separate, permissioned behavior module and only apply skills explicitly invoked by the user or by repository conventions documented here.
+- Keep changes minimal and focused.
+- Follow existing architecture and patterns.
+- Avoid unnecessary dependencies and abstractions.
+- Read only relevant files.
+- Use concise responses.
+- Never skip tests for changed behavior.
+- Do not modify unrelated code.
+- Use skills only when relevant to the task.
+- Prefer JEV output where supported and useful.

@@ -1,3 +1,8 @@
+---
+name: mui-frontend
+description: Build and edit React UI with the repository's MUI theme and component conventions (sx styling, theme tokens, MUI primitives, no feature CSS). Use for any React/TSX UI work in this repository, such as creating or changing components, pages, layouts, styling, or icon actions.
+---
+
 # MUI Frontend Skill
 
 Use this skill for React UI work in this repository.
@@ -96,6 +101,6 @@ Stable app panel:
 
 Use the repository `.prettierrc` as the formatter source of truth.
 
-Do not write, add, update, or propose tests unless the user explicitly asks for tests.
+Add or update tests for changed UI behavior, following existing test patterns. Purely visual changes (styling, spacing, layout tweaks) do not need new tests.
 
 Do not run `npm run build` or `npm run lint` after generation unless the user explicitly asks for it.
