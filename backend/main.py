@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from database import engine, Base
 from routers import hello, auth
 from seed_roles import seed_roles
 
@@ -15,10 +14,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
-
-# Seed default roles
+# Create database tables and seed default roles
 seed_roles()
 
 # Include routers

@@ -94,7 +94,9 @@ const Dashboard = ({ user, onLogout }: DashboardProps) => {
 
   useEffect(() => {
     fetchProtectedData();
-    fetchAllUsers();
+    if (hasPermission(user, 'read_all_users')) {
+      fetchAllUsers();
+    }
   }, [user, fetchAllUsers]);
 
   return (
@@ -151,9 +153,9 @@ const Dashboard = ({ user, onLogout }: DashboardProps) => {
               <Button
                 variant="outlined"
                 color="warning"
-                onClick={() => deleteUser(users[0].id ?? 0)}
+                onClick={() => deleteUser(user.id)}
               >
-                Test DELETE 1st from the list
+                Test DELETE
               </Button>
               {userTestError && (
                 <Alert severity="error" sx={{ mt: 2 }}>
@@ -163,67 +165,69 @@ const Dashboard = ({ user, onLogout }: DashboardProps) => {
             </Paper>
           )}
 
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="overline" color="text.secondary">
-              USERS
-            </Typography>
-            <Typography variant="h6" component="h3" gutterBottom>
-              All Users
-            </Typography>
-            {loading ? (
-              <Box sx={{ display: 'grid', placeItems: 'center', py: 4 }}>
-                <CircularProgress />
-              </Box>
-            ) : (
-              <TableContainer>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>ID</TableCell>
-                      <TableCell>Username</TableCell>
-                      <TableCell>Email</TableCell>
-                      <TableCell>Roles</TableCell>
-                      <TableCell>Active</TableCell>
-                      <TableCell>Created</TableCell>
-                      {hasPermission(user, 'delete_users') && (
-                        <TableCell>Actions</TableCell>
-                      )}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {users.map(userItem => (
-                      <TableRow key={userItem.id}>
-                        <TableCell>{userItem.id}</TableCell>
-                        <TableCell>{userItem.username}</TableCell>
-                        <TableCell>{userItem.email}</TableCell>
-                        <TableCell>{userItem.roles.join(', ')}</TableCell>
-                        <TableCell>
-                          {userItem.is_active ? 'Yes' : 'No'}
-                        </TableCell>
-                        <TableCell>
-                          {new Date(userItem.created_at).toLocaleDateString()}
-                        </TableCell>
+          {hasPermission(user, 'read_all_users') && (
+            <Paper sx={{ p: 3 }}>
+              <Typography variant="overline" color="text.secondary">
+                USERS
+              </Typography>
+              <Typography variant="h6" component="h3" gutterBottom>
+                All Users
+              </Typography>
+              {loading ? (
+                <Box sx={{ display: 'grid', placeItems: 'center', py: 4 }}>
+                  <CircularProgress />
+                </Box>
+              ) : (
+                <TableContainer>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>ID</TableCell>
+                        <TableCell>Username</TableCell>
+                        <TableCell>Email</TableCell>
+                        <TableCell>Roles</TableCell>
+                        <TableCell>Active</TableCell>
+                        <TableCell>Created</TableCell>
                         {hasPermission(user, 'delete_users') && (
-                          <TableCell>
-                            {!userItem.roles.includes('admin') && (
-                              <Button
-                                size="small"
-                                color="error"
-                                variant="outlined"
-                                onClick={() => deleteUser(userItem.id)}
-                              >
-                                DELETE
-                              </Button>
-                            )}
-                          </TableCell>
+                          <TableCell>Actions</TableCell>
                         )}
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-          </Paper>
+                    </TableHead>
+                    <TableBody>
+                      {users.map(userItem => (
+                        <TableRow key={userItem.id}>
+                          <TableCell>{userItem.id}</TableCell>
+                          <TableCell>{userItem.username}</TableCell>
+                          <TableCell>{userItem.email}</TableCell>
+                          <TableCell>{userItem.roles.join(', ')}</TableCell>
+                          <TableCell>
+                            {userItem.is_active ? 'Yes' : 'No'}
+                          </TableCell>
+                          <TableCell>
+                            {new Date(userItem.created_at).toLocaleDateString()}
+                          </TableCell>
+                          {hasPermission(user, 'delete_users') && (
+                            <TableCell>
+                              {!userItem.roles.includes('admin') && (
+                                <Button
+                                  size="small"
+                                  color="error"
+                                  variant="outlined"
+                                  onClick={() => deleteUser(userItem.id)}
+                                >
+                                  DELETE
+                                </Button>
+                              )}
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              )}
+            </Paper>
+          )}
         </Stack>
       </Container>
     </Box>

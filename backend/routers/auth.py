@@ -10,10 +10,9 @@ from auth import (
     authenticate_user,
     create_access_token,
     get_password_hash,
-    get_current_user,
     ACCESS_TOKEN_EXPIRE_MINUTES,
 )
-from dependencies import require_permission
+from dependencies import get_current_user, require_permission
 from permissions import resolve_permissions
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
@@ -31,29 +30,28 @@ async def register(user: UserCreate, db: Session = Depends(get_db)):
     if db_user:
         raise HTTPException(status_code=400, detail="Username already taken")
 
-    # Check if this is the first user
-    user_count = db.query(User).count()
-    is_first_user = user_count == 0
+    # Lock the admin role row so concurrent registrations run one at a time
+    admin_role = db.query(Role).filter(Role.name == "admin").with_for_update().first()
 
-    # Create new user
+    # Check if this is the first user
+    is_first_user = db.query(User).count() == 0
+
+    # Assign role based on user count
+    if is_first_user:
+        role = admin_role
+    else:
+        role = db.query(Role).filter(Role.name == "user").first()
+
+    # Create new user with its role in a single commit
     hashed_password = get_password_hash(user.password)
     db_user = User(
         email=user.email, username=user.username, hashed_password=hashed_password
     )
+    if role:
+        db_user.roles.append(role)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-
-    # Assign role based on user count
-    if is_first_user:
-        role = db.query(Role).filter(Role.name == "admin").first()
-    else:
-        role = db.query(Role).filter(Role.name == "user").first()
-
-    if role:
-        db_user.roles.append(role)
-        db.commit()
-        db.refresh(db_user)
 
     # Return user data
     return UserResponse(
@@ -76,6 +74,10 @@ async def login(user_credentials: UserLogin, db: Session = Depends(get_db)):
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    if not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Inactive account"
+        )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
@@ -97,7 +99,10 @@ async def get_current_user_info(current_user: User = Depends(get_current_user)):
 
 
 @router.get("/users", response_model=list[UserResponse])
-async def get_all_users(db: Session = Depends(get_db)):
+async def get_all_users(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_permission("read_all_users")),
+):
     users = db.query(User).all()
     return [
         UserResponse(
